@@ -1,0 +1,16 @@
+SECRET_KEY = Your SecretKey
+DEBUG =
+ALLOWED_HOSTS = localhost
+DB_NAME = dbname
+DB_USER = db_user
+DB_PASSWORD = password
+DB_HOST = localhost
+DB_PORT = port
+SITE_ID = your id
+
+EMAIL_USE_TLS =
+EMAIL_PORT = port
+EMAIL_HOST_USER = account_gmail
+EMAIL_HOST_PASSWORD = host_password
+LANGUAGE_CODE = lan-code
+TIME_ZONE = Time_zone
