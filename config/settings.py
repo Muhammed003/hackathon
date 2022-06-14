@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+    'rest_framework_simplejwt',
+
 
     # register with social networking
 
@@ -164,10 +167,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+                # JWT token
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'JTI_CLAIM': 'jti',
+
+}
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # <--  JWT
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
@@ -182,4 +196,4 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # LOGOUT_REDIRECT_URL = '/home'
 
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
