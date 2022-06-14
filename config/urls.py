@@ -48,7 +48,7 @@ urlpatterns = [
     path('account/', include('apps.users.urls')),
 
     #PRODUCT
-    path('', include(('apps.product.urls'))),
+    path('products', include(('apps.product.urls'))),
 
     #CATEGORY
     path('category/', include('apps.category.urls')),

@@ -11,7 +11,7 @@ router.register('', ProductViewSet)
 urlpatterns = [
     # """                  Start            Serializers                 """,
     # path("similars/", ProductDetailView.as_view()),
-    path("product/", include(router.urls)),
+    path("", include(router.urls)),
     # """                  End            Serializers                 """,
 
 
