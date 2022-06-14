@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 """                     My models                       """
 
 from .paginations import ProductPagination
-from apps.user_shop.permissions import IsAdminOrAllowAny, IsReviewAuthor
+from ..users.permissions import IsAdminOrAllowAny, IsReviewAuthor
 from .models import Product, ProductImage, Review, LikeProduct, Favorite
 from .serializers import ProductSerializer, ProductImageSerializer, ReviewProductSerializer, ProductDetailSerializer, \
     FavoriteListSerializer
@@ -42,7 +42,7 @@ class ProductViewSet(ModelViewSet):
 
     # products/id/like/
     @action(detail=True, methods=['GET'])
-    def like(self, request, pk):
+    def toggle_like(self, request, pk):
         product = self.get_object()
         user = request.user
         fav, created = LikeProduct.objects.get_or_create(product=product, user=user)

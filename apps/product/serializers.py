@@ -6,6 +6,11 @@ class ProductSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     created_at = serializers.DateTimeField(format='%d/%m/%Y %H:%M:%S', read_only=True)
 
+    title = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    category = serializers.SlugField(required=False)
+
     class Meta:
         model = Product
         exclude = ('create_date', 'update_date')
