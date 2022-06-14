@@ -44,4 +44,7 @@ urlpatterns = [
     # MY URLS
     path('admin/', admin.site.urls),
     path('account/', include('apps.users.urls')),
+
+    #PRODUCT
+    path('product/', include(('apps.product.urls')))
 ]
