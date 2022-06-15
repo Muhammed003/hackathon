@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
-
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+
 from apps.category.models import Category
 
 
@@ -61,3 +62,20 @@ class Favorite(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorites')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorites')
     favorite = models.BooleanField(default=False)
+
+
+class Rating(models.Model):
+    rating = models.SmallIntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='raiting')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating')
+
+    class Meta:
+        uniqe_together = ('user', 'product')
+        verbose_name = 'Оценка'
+        verbose_name_plural = 'Оценки'
+        ordering = ['rating']
+
+    def __str__(self):
+        return f'self.rating'
+
+

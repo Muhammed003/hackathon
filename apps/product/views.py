@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
@@ -13,8 +14,7 @@ from rest_framework.decorators import action
 from .paginations import ProductPagination
 from ..users.permissions import IsAdminOrAllowAny, IsReviewAuthor
 from .models import Product, ProductImage, Review, LikeProduct, Favorite
-from .serializers import ProductSerializer, ProductImageSerializer, ReviewProductSerializer, ProductDetailSerializer, \
-    FavoriteListSerializer
+from .serializers import *
 
 """             Serializers                 """
 
@@ -101,6 +101,12 @@ class FavoriteView(ListAPIView):
         #                           model     FK                      model     boolean_field
         queryset = queryset.filter(favorites__user=self.request.user, favorites__favorite=True)
         return queryset
+
+
+class RaitingView(viewsets.ReadOnlyModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = [IsAuthenticated, ]
 
 
 """                  END            Serializers                 """
