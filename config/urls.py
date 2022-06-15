@@ -53,7 +53,11 @@ urlpatterns = [
     #CATEGORY
     path('category/', include('apps.category.urls')),
 
+    # ORDER AND CART ITEM
+    path('orders/', include('apps.order.urls')),
+    path('cart/', include('apps.cart.urls')),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

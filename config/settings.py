@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # my apps
     'apps.users',
     'apps.category',
+    'apps.cart',
     'apps.product',
     'apps.order',
 
@@ -97,7 +98,7 @@ TEMPLATES = [
         },
     },
 ]
-
+CART_SESSION_ID = 'cart'
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database

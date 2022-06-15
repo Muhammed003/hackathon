@@ -1,9 +1,15 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import SimpleRouter
 
-from .views import ShoppingCartView, AddProductInCartView
+from .views import *
+
+# router = SimpleRouter()
+# router.register('', OrderViewSet)
 
 urlpatterns = [
-    path('', ShoppingCartView.as_view()),
-    path('<int:pk>/', ShoppingCartView.as_view()),
-    path('add/', AddProductInCartView.as_view()),
+    path("", OrderViewSet.as_view()),
+    path("confirm/<str:activate_code>", ActivateOrderView.as_view()),
+    # path("history/", OrderHistoryView.as_view()),
+
 ]
+

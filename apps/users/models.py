@@ -6,6 +6,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.auth.hashers import make_password
 from django.db.models.signals import post_save
 
+from apps.users.services.signals import post_create_cart_signal
+
 
 class CustomUserManager(UserManager):
 
@@ -57,3 +59,6 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         self.activate_code = self.generate_activation_code(10, "qwerty123456789")
         return super().save(*args, **kwargs)
+
+
+post_save.connect(post_create_cart_signal, sender=CustomUser)
