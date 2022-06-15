@@ -15,7 +15,6 @@ class Product(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
     # watch = models.PositiveIntegerField(default=0)
-
     def __str__(self):
         return self.title
 

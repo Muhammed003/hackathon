@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 # Create your views here.
 from .models import ShoppingCart
 from .serializers import *
+from drf_yasg.utils import swagger_auto_schema
 
 
 class ShoppingCartView(APIView):
@@ -17,6 +18,7 @@ class ShoppingCartView(APIView):
         serializer = CartSerializers(cart)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=CartSerializers)
     def put(self, request, pk=None):
         cart = request.user.cart
         try:
@@ -30,6 +32,7 @@ class ShoppingCartView(APIView):
         serializer = CartItemSerializers(cart_item)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=CartSerializers)
     def delete(self, request, pk=None):
         cart = request.user.cart
         try:
@@ -44,6 +47,7 @@ class ShoppingCartView(APIView):
 class AddProductCartView(APIView):
     permission_classes = (IsAuthenticated, )
 
+    @swagger_auto_schema(request_body=CartItemSerializers)
     def post(self, request):
         data = request.POST
         serializer = CartItemSerializers(data=data, context={"request": request})
