@@ -6,6 +6,7 @@ from rest_framework.generics import RetrieveAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import Token
 
 from .models import CustomUser
 from .serializers import UserSerializer, RegisterSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
@@ -20,16 +21,17 @@ class RegistrationView(APIView):
             send_activation_code(user.activate_code, user.email)
             message = "You are successfully registrated, we have sent activation code to your email! Thank you!"
 
-            return Response(message)
+            return Response(message, status=status.HTTP_200_OK)
 
 
-class HelloView(APIView):
-    permission_classes = (IsAuthenticated,)
+class LogoutAPIView(APIView):
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
-        content = {'message': 'Hello, World!'}
-        return Response(content)
-
+        user = request.user
+        token = Token.objects.get(user=user)
+        token.delete()
+        return Response('You are logout', status=status.HTTP_401_UNAUTHORIZED)
 
 class ActivateView(APIView):
     def get(self, request, activate_code):

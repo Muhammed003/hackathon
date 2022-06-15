@@ -9,7 +9,6 @@ class ProductSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    category = serializers.SlugField(required=False)
 
     class Meta:
         model = Product
@@ -25,6 +24,11 @@ class ProductSerializer(serializers.ModelSerializer):
                                                   many=True, context=self.context).data
 
         representation['likes'] = instance.likes.filter(is_like=True).count()
+        # instance.likes.get(is_like=True)
+        if instance.likes.filter(is_like=True, user_id=self.context['request'].user.id):
+            representation['liked_by_user'] = True
+        else:
+            representation['liked_by_user'] = False
         return representation
 
 

@@ -7,7 +7,6 @@ router = SimpleRouter()
 router.register('images', ProductImageView)
 router.register('reviews', ReviewProductView)
 router.register('', ProductViewSet)
-
 urlpatterns = [
     # """                  Start            Serializers                 """,
     # path("similars/", ProductDetailView.as_view()),
