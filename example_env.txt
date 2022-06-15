@@ -14,3 +14,6 @@ EMAIL_HOST_USER = account_gmail
 EMAIL_HOST_PASSWORD = host_password
 LANGUAGE_CODE = lan-code
 TIME_ZONE = Time_zone
+
+link_send_activation_code =
+link_send_order_activate_code =

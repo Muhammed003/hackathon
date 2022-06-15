@@ -1,10 +1,11 @@
+from decouple import config
 from django.core.mail import send_mail
 
 
 def send_activation_code(activate_code: str, email:str):
     title = "Hello it is activate link your user_shop in site OnlineShop"
-    message = f"please click this activate code http://127.0.0.1:8000/account/activate/{activate_code}"
-    from_email = "SnakeShop@gmail.com"
+    message = f"please click this activate code {config('link_send_activation_code')}{activate_code}"
+    from_email = "OnlineShop@gmail.com"
 
     send_mail(
         title,
@@ -18,7 +19,7 @@ def send_activation_code(activate_code: str, email:str):
 def send_new_password(email: str, activate_code: str):
     title = "Hi it is reset your password user_shop in site"
     message = f"Please write this password to change your password : {activate_code}"
-    from_email = "SnakeShop2@gmail.com"
+    from_email = "OnlineShop@gmail.com"
 
     send_mail(
         title,
@@ -31,8 +32,8 @@ def send_new_password(email: str, activate_code: str):
 
 def send_order_activate_code(email: str, activate_code: str):
     title = "Hi you ordered some product in our site please confirm it"
-    message = f"Please click to this link to confirm your order  http://127.0.0.1:8000/orders/confirm/{activate_code}"
-    from_email = "SnakeShop2@gmail.com"
+    message = f"Please click to this link to confirm your order  {config('link_send_order_activate_code')}{activate_code}"
+    from_email = "OnlineShop@gmail.com"
 
     send_mail(
         title,
