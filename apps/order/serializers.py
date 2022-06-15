@@ -1,16 +1,14 @@
+from rest_framework.validators import UniqueValidator
+
 from apps.order.models import Order, OrderItem
 from rest_framework import serializers
+
+from apps.users.models import CustomUser
 
 
 class OrdersSerializer(serializers.ModelSerializer):
     order_comments = serializers.CharField(required=False)
-    email = serializers.SerializerMethodField('_user')
-
-    def _user(self, obj):
-        request = self.context.get('request', None)
-        if request:
-            print(request.user)
-            return request.user
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Order

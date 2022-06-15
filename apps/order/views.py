@@ -19,38 +19,37 @@ from ..users.services.utils import send_order_activate_code
 class OrderViewSet(APIView):
     def get(self, request):
         if request.user.is_authenticated:
-            posts = Order.objects.filter(email=request.user)
+            posts = Order.objects.filter(user=request.user, paid=True)
             serializer = OrdersSerializer(posts, many=True)
             return Response(serializer.data)
         else:
             return Response("You should log in to your account to start")
 
     def post(self, request):
-        post = request.data
-        serializer = OrdersSerializer(data=post,  context={'request': request})
+        data = request.data
+        serializer = OrdersSerializer(data=data, context={'request': request})
         try:
-            user = CustomUser.objects.get(email=request.user)
+            user = CustomUser.objects.get(id=request.user.id)
         except:
             raise serializers.ValidationError(
                 'User was not found'
             )
         carts = CartItem.objects.filter(cart_shopping=user.cart)
         if serializer.is_valid(raise_exception=True):
-            if carts != '':
+            if carts.exists():
                 order = serializer.save()
                 activate_order = order.generate_activation_code(10, "qwerty12345")
                 order.activate_order_code = activate_order
-                order.user = request.user
+                order.email = request.user
                 for cart in carts:
                     product = Product.objects.get(pk=int(cart.product_id))
-                    print(product.price)
                     OrderItem.objects.create(order=order,
                                              product=product,
                                              quantity=int(cart.quantity),
                                              price=product.price
                                              )
                 order.save()
-                # send_order_activate_code(order.user.email, order.activate_order_code)
+                send_order_activate_code(order.user.email, order.activate_order_code)
                 return Response("Please confirm you order")
             else:
                 return Response("Cart is empty")
@@ -63,6 +62,11 @@ class OrderHistoryView(APIView):
         orders = Order.objects.filter(user=request.user)
         serializer = OrdersHistorySerializer(orders, many=True)
         return Response(serializer.data)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products'] = Order.objects.filter(paid=True)
+        return context
 
 class ActivateOrderView(APIView):
     def get(self, request, activate_code):

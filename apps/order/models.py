@@ -1,6 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from apps.cart.models import ShoppingCart
 from apps.product.models import Product
+User = get_user_model()
 
 
 class Order(models.Model):
@@ -11,7 +13,7 @@ class Order(models.Model):
     shopping_cart = models.ForeignKey(to=ShoppingCart, on_delete=models.PROTECT, related_name='order')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField()
+    user = models.ForeignKey(User, verbose_name="пользователь", on_delete=models.CASCADE, blank=True)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
