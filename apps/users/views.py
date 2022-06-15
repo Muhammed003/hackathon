@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
@@ -14,6 +14,7 @@ from .services.utils import send_activation_code, send_new_password
 
 
 class RegistrationView(APIView):
+    @swagger_auto_schema(request_body=RegisterSerializer)
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -43,6 +44,7 @@ class ActivateView(APIView):
 
 
 class ForgetPasswordView(APIView):
+    @swagger_auto_schema(request_body=ForgotPasswordSerializer)
     def post(self, request):
         data = request.POST
         serializer = ForgotPasswordSerializer(data=data)
@@ -59,6 +61,7 @@ class ForgetPasswordView(APIView):
 
 
 class ResetPasswordView(APIView):
+    @swagger_auto_schema(request_body=ResetPasswordSerializer)
     def post(self, request):
         data = request.POST
         serializer = ResetPasswordSerializer(data=request.data)

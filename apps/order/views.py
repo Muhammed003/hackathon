@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status, serializers
-
+from drf_yasg.utils import swagger_auto_schema
 from config import settings
 from .models import Order, OrderItem
 from .serializers import OrdersSerializer, OrdersHistorySerializer
@@ -25,6 +25,7 @@ class OrderViewSet(APIView):
         else:
             return Response("You should log in to your account to start")
 
+    @swagger_auto_schema(request_body=OrdersSerializer)
     def post(self, request):
         data = request.data
         serializer = OrdersSerializer(data=data, context={'request': request})
