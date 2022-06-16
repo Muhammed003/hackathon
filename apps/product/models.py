@@ -11,7 +11,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
-    manufacture = models.CharField(max_length=500)
+    manufacture = models.CharField(max_length=500, blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
