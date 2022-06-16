@@ -21,8 +21,7 @@ class Product(models.Model):
     manufacture = models.CharField(max_length=500, blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=False)
-    # watch = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.title
 
