@@ -16,7 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['category'] = instance.category.name
+        # representation['category'] = instance.category.name
         representation['author'] = instance.author.email
         representation['images'] = ProductImageSerializer(instance.images.all(),
                                                   many=True, context=self.context).data
@@ -53,7 +53,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['image'] = self._get_image_url(instance)
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 
@@ -70,7 +70,7 @@ class ReviewProductSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['author'] = instance.author.email
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 
@@ -92,7 +92,7 @@ class SimilarProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 

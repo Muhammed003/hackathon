@@ -11,7 +11,6 @@ urlpatterns = [
     path('api/register/', RegistrationView.as_view(), name='hello'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/logout/', LogoutAPIView.as_view()),
     path("activate/<str:activate_code>/", ActivateView.as_view()),
 
     # forgot rest password

@@ -51,9 +51,6 @@ urlpatterns = [
     #PRODUCT
     path('products/', include(('apps.product.urls'))),
 
-    #CATEGORY
-    path('category/', include('apps.category.urls')),
-
     # ORDER AND CART ITEM
     path('orders/', include('apps.order.urls')),
     path('cart/', include('apps.cart.urls')),
