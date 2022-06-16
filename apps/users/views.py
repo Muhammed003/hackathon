@@ -25,15 +25,6 @@ class RegistrationView(APIView):
             return Response(message, status=status.HTTP_200_OK)
 
 
-class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated, ]
-
-    def get(self, request):
-        user = request.user
-        token = Token.objects.get(user=user)
-        token.delete()
-        return Response('You are logout', status=status.HTTP_401_UNAUTHORIZED)
-
 class ActivateView(APIView):
     def get(self, request, activate_code):
         user = get_object_or_404(CustomUser, activate_code=activate_code)

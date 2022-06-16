@@ -5,8 +5,6 @@ from .models import Product, ProductImage, Review, LikeProduct, SimilarProduct
 class ProductSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     created_at = serializers.DateTimeField(format='%d/%m/%Y %H:%M:%S', read_only=True)
-
-    title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
 
@@ -16,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['category'] = instance.category.name
+        # representation['category'] = instance.category.name
         representation['author'] = instance.author.email
         representation['images'] = ProductImageSerializer(instance.images.all(),
                                                   many=True, context=self.context).data
@@ -53,7 +51,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['image'] = self._get_image_url(instance)
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 
@@ -70,7 +68,7 @@ class ReviewProductSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['author'] = instance.author.email
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 
@@ -92,7 +90,7 @@ class SimilarProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['product'] = instance.product.title
+        representation['product'] = instance.product.name
         return representation
 
 

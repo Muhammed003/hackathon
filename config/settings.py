@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     # my apps
     'apps.users',
-    'apps.category',
     'apps.cart',
     'apps.product',
     'apps.order',
@@ -187,7 +186,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # <--  JWT
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
