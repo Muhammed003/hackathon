@@ -54,7 +54,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
-    def validate(self, attrs:dict):
+    def validate(self, attrs: dict):
         email = attrs.get("email")
         try:
             CustomUser.objects.get(email=email)

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.product',
     'apps.order',
+    'apps.parse',
 
     # lib
     'rest_framework',
@@ -202,3 +203,5 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
