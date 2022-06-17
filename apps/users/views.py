@@ -37,18 +37,20 @@ class ActivateView(APIView):
 class ForgetPasswordView(APIView):
     @swagger_auto_schema(request_body=ForgotPasswordSerializer)
     def post(self, request):
-        data = request.POST
+        data = request.data
         serializer = ForgotPasswordSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data.get("email")
-        user: CustomUser = CustomUser.objects.get(email=email)
-        new_token_to_password = user.generate_activation_code(10, "qwerty12345")
-        user.password = ''
-        user.activate_code = new_token_to_password
-        user.save()
-        send_new_password(email, user.activate_code)
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data.get("email")
+            user: CustomUser = CustomUser.objects.get(email=email)
+            new_token_to_password = user.generate_activation_code(10, "qwerty12345")
+            user.password = ''
+            user.activate_code = new_token_to_password
+            user.save()
+            send_new_password(email, user.activate_code)
 
-        return Response({"message": "We send you code to change password"}, status=status.HTTP_200_OK)
+            return Response({"message": "We send you code to change password"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Error email"})
 
 
 class ResetPasswordView(APIView):

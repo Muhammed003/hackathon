@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ProductImage, Review, LikeProduct, SimilarProduct
+from .models import Product, Review, LikeProduct, SimilarProduct
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -16,8 +16,6 @@ class ProductSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         # representation['category'] = instance.category.name
         representation['author'] = instance.author.email
-        representation['images'] = ProductImageSerializer(instance.images.all(),
-                                                  many=True, context=self.context).data
         representation['reviews'] = ReviewProductSerializer(instance.reviews.all(),
                                                   many=True, context=self.context).data
 
@@ -27,31 +25,6 @@ class ProductSerializer(serializers.ModelSerializer):
             representation['liked_by_user'] = True
         else:
             representation['liked_by_user'] = False
-        return representation
-
-
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = '__all__'
-
-    def _get_image_url(self, obj):
-        if obj.image:
-            url = obj.image.url
-            request = self.context.get('request')
-
-            if request is not None:
-                url = request.build_absolute_uri(url)
-
-        else:
-            url = ''
-
-        return url
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['image'] = self._get_image_url(instance)
-        representation['product'] = instance.product.name
         return representation
 
 

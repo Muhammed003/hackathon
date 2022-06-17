@@ -3,16 +3,12 @@ from .models import *
 # Register your models here.
 
 
-class ImageInLineAdmin(admin.TabularInline):
-    model = ProductImage
-    fields = ('image',)
-    max_num = 5
 
-
-@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ImageInLineAdmin, ]
+    list_display = ['name', 'price', 'author', 'type', 'manufacture']
+    list_filter = ['price',]
+    search_fields = ['name']
 
 
 admin.site.register(LikeProduct)
-admin.site.register(ProductImage)
+admin.site.register(Product, ProductAdmin)

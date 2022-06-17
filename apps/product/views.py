@@ -12,8 +12,8 @@ from rest_framework.decorators import action
 
 from .paginations import ProductPagination
 from ..users.permissions import IsAdminOrAllowAny, IsReviewAuthor
-from .models import Product, ProductImage, Review, LikeProduct, Favorite
-from .serializers import ProductSerializer, ProductImageSerializer, ReviewProductSerializer, ProductDetailSerializer, \
+from .models import Product, Review, LikeProduct, Favorite
+from .serializers import ProductSerializer, ReviewProductSerializer, ProductDetailSerializer, \
     FavoriteListSerializer
 
 """             Serializers                 """
@@ -69,15 +69,6 @@ class ProductViewSet(ModelViewSet):
             fav.favorite = not fav.favorite
             fav.save()
             return Response('Not in Favs')
-
-
-class ProductImageView(ModelViewSet):
-    queryset = ProductImage.objects.all()
-    serializer_class = ProductImageSerializer
-    permission_classes = [IsAdminOrAllowAny, ]
-
-    def get_serializer_context(self):
-        return {'return': self.request}
 
 
 class ReviewProductView(ModelViewSet):
