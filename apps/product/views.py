@@ -23,10 +23,10 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, SearchFilter)
-    ordering_fields = ['create_date', 'title', 'price']
+    ordering_fields = ['create_date', 'name', 'price']
     permission_classes = [IsAuthenticated, ]
     pagination_class = ProductPagination
-    search_fields = ['title', 'description']
+    search_fields = ['name', 'description']
 
     def get_serializer_class(self):
         if self.action == 'list':

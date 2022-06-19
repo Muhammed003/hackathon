@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import Token
 from .models import CustomUser
 from .serializers import UserSerializer, RegisterSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
 from .services.utils import send_activation_code, send_new_password
+from ..tasks.tasks import sent_activation_code_task
 
 
 class RegistrationView(APIView):
@@ -19,7 +20,7 @@ class RegistrationView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            send_activation_code(user.activate_code, user.email)
+            sent_activation_code_task.delay(user.activate_code, user.email)
             message = "You are successfully registrated, we have sent activation code to your email! Thank you!"
 
             return Response(message, status=status.HTTP_200_OK)
@@ -43,7 +44,6 @@ class ForgetPasswordView(APIView):
             email = serializer.validated_data.get("email")
             user: CustomUser = CustomUser.objects.get(email=email)
             new_token_to_password = user.generate_activation_code(10, "qwerty12345")
-            user.password = ''
             user.activate_code = new_token_to_password
             user.save()
             send_new_password(email, user.activate_code)
