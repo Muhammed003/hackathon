@@ -1,7 +1,8 @@
 from apps.product.models import Product
 from celery import shared_task
 from celery.schedules import crontab
-from apps.users.services.utils import send_activation_code, send_notification_message
+# from apps.users.services.utils import send_activation_code, send_notification_message
+from apps.users.services.utils import send_notification_message, send_activation_code
 from config.celery import app
 # app.conf.beat_schedule = {
 #     # Executes every day at  12:30 pm.
@@ -14,11 +15,10 @@ from config.celery import app
 
 
 @shared_task
-@shared_task
 def send_activation_code_task(activate_code, email):
     send_activation_code(activate_code, email)
 
-
+@shared_task
 def send_notification_message_task(email, product, product_id):
     send_notification_message(email, product, product_id)
 @shared_task
