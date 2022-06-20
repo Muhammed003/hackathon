@@ -42,10 +42,10 @@ INSTALLED_APPS = [
 
     # my apps
     'apps.users',
-    'apps.category',
     'apps.cart',
     'apps.product',
     'apps.order',
+    'apps.parse',
 
     # lib
     'rest_framework',
@@ -166,7 +166,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 # JWT token
 
 SIMPLE_JWT = {
@@ -188,7 +187,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # <--  JWT
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
@@ -205,3 +203,5 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+

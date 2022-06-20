@@ -51,6 +51,8 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    def __str__(self):
+        return 'User {}'.format(self.id)
     @staticmethod
     def generate_activation_code(length: int, number_range: str):
         from django.utils.crypto import get_random_string

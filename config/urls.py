@@ -39,6 +39,7 @@ urlpatterns = [
     # SWAGGER
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('accounts/', include('rest_framework.urls', namespace='rest_framework')),
 
     # social account register
     path('socialaccount/', include('allauth.urls')),
@@ -50,12 +51,12 @@ urlpatterns = [
     #PRODUCT
     path('products/', include(('apps.product.urls'))),
 
-    #CATEGORY
-    path('category/', include('apps.category.urls')),
-
     # ORDER AND CART ITEM
     path('orders/', include('apps.order.urls')),
     path('cart/', include('apps.cart.urls')),
+
+    # PARSE
+    path('parse/', include('apps.parse.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

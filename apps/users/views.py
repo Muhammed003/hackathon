@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here.
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
@@ -14,6 +14,7 @@ from .services.utils import send_activation_code, send_new_password
 
 
 class RegistrationView(APIView):
+    @swagger_auto_schema(request_body=RegisterSerializer)
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -23,15 +24,6 @@ class RegistrationView(APIView):
 
             return Response(message, status=status.HTTP_200_OK)
 
-
-class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated, ]
-
-    def get(self, request):
-        user = request.user
-        token = Token.objects.get(user=user)
-        token.delete()
-        return Response('You are logout', status=status.HTTP_401_UNAUTHORIZED)
 
 class ActivateView(APIView):
     def get(self, request, activate_code):
@@ -43,22 +35,26 @@ class ActivateView(APIView):
 
 
 class ForgetPasswordView(APIView):
+    @swagger_auto_schema(request_body=ForgotPasswordSerializer)
     def post(self, request):
-        data = request.POST
+        data = request.data
         serializer = ForgotPasswordSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data.get("email")
-        user: CustomUser = CustomUser.objects.get(email=email)
-        new_token_to_password = user.generate_activation_code(10, "qwerty12345")
-        user.password = ''
-        user.activate_code = new_token_to_password
-        user.save()
-        send_new_password(email, user.activate_code)
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data.get("email")
+            user: CustomUser = CustomUser.objects.get(email=email)
+            new_token_to_password = user.generate_activation_code(10, "qwerty12345")
+            user.password = ''
+            user.activate_code = new_token_to_password
+            user.save()
+            send_new_password(email, user.activate_code)
 
-        return Response({"message": "We send you code to change password"}, status=status.HTTP_200_OK)
+            return Response({"message": "We send you code to change password"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Error email"})
 
 
 class ResetPasswordView(APIView):
+    @swagger_auto_schema(request_body=ResetPasswordSerializer)
     def post(self, request):
         data = request.POST
         serializer = ResetPasswordSerializer(data=request.data)
