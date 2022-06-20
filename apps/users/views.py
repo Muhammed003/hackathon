@@ -20,7 +20,7 @@ class RegistrationView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            sent_activation_code_task.delay(user.activate_code, user.email)
+            send_activation_code(user.activate_code, user.email)
             message = "You are successfully registrated, we have sent activation code to your email! Thank you!"
 
             return Response(message, status=status.HTTP_200_OK)
@@ -30,7 +30,6 @@ class ActivateView(APIView):
     def get(self, request, activate_code):
         user = get_object_or_404(CustomUser, activate_code=activate_code)
         user.is_active = True
-        user.activate_code = ''
         user.save()
         return Response('Your Account is successfully activated!', status=status.HTTP_200_OK)
 

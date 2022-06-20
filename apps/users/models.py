@@ -42,10 +42,10 @@ class CustomUserManager(UserManager):
 
 class CustomUser(AbstractUser):
     username = models.CharField(blank=True, null=True, max_length=150)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     activate_code = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
-
+    is_subscribed = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username", ]
 

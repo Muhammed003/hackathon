@@ -208,15 +208,15 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # CELERY
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://loclahost:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'default'
 
 # django setting.
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cool_site'),
     }
 }
 
