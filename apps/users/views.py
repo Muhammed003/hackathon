@@ -11,7 +11,6 @@ from rest_framework_simplejwt.tokens import Token
 from .models import CustomUser
 from .serializers import UserSerializer, RegisterSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
 from .services.utils import send_activation_code, send_new_password
-from ..tasks.tasks import sent_activation_code_task
 
 
 class RegistrationView(APIView):
@@ -70,3 +69,30 @@ class ResetPasswordView(APIView):
                         return Response({'message': "Your password successfully changed"}, status=status.HTTP_200_OK)
             except:
                 return Response({'message':"Incorrect activation code"}, status=status.HTTP_401_UNAUTHORIZED)
+
+# SUBSCRIBE
+
+
+class SubscribeView(APIView):
+    permission_classes = [IsAuthenticated, ]
+    def get(self, request):
+        user = CustomUser.objects.get(pk=request.user.id)
+        if user.is_subscribed == False:
+            user.is_subscribed = not user.is_subscribed
+            user.save()
+            return Response('You subscribed to our products. Thank you !!!')
+        else:
+            user.is_subscribed = not user.is_subscribed
+            user.save()
+            return Response("You unsubscribed you can't get notification.")
+# product = self.get_object()
+# user = request.user
+# fav, created = LikeProduct.objects.get_or_create(product=product, user=user)
+# if fav.is_like == False:
+#     fav.is_like = not fav.is_like
+#     fav.save()
+#     return Response('You liked this product')
+# else:
+#     fav.is_like = not fav.is_like
+#     fav.save()
+#     return Response('You disliked this product')

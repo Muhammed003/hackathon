@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Product, Review, LikeProduct, SimilarProduct
+from ..users.services.utils import send_notification_message
 
 
 class ProductSerializer(serializers.ModelSerializer):

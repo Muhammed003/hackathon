@@ -42,3 +42,18 @@ def send_order_activate_code(email: str, activate_code: str):
         [email],
         fail_silently=False,
     )
+
+
+def send_notification_message(email: str, product, product_id):
+    title = "Hi you got this message because you subscribed in site OnlineShopping"
+    message = f"Please see our new products we add some new products:   {product }  " \
+              f"{config('link_product_notification')}{product_id}"
+    from_email = "OnlineShop@gmail.com"
+
+    send_mail(
+        title,
+        message,
+        from_email,
+        [email],
+        fail_silently=False,
+    )
