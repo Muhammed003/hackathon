@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
 from rest_framework import generics
 from rest_framework.generics import ListAPIView
@@ -28,10 +30,17 @@ class ProductViewSet(ModelViewSet):
     pagination_class = ProductPagination
     search_fields = ['name', 'description']
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ProductSerializer
-        return super().get_serializer_class()
+    @method_decorator(cache_page(60 * 15))
+    def list(self, request, format=None):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
