@@ -1,7 +1,7 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
@@ -9,6 +9,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter, SearchFilter
 import django_filters.rest_framework as filters
 from rest_framework.decorators import action
+
+from ..users.models import CustomUser
+from ..users.services.utils import send_notification_message
 
 """                     My models                       """
 
@@ -79,6 +82,19 @@ class ProductViewSet(ModelViewSet):
             fav.save()
             return Response('Not in Favs')
 
+    def create(self, request, **validated_data):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        product_name = serializer.data.get('name')
+        product_id = serializer.data.get('id')
+        for contact in CustomUser.objects.filter(is_subscribed=True):
+            send_notification_message(contact.email, product_name, product_id)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        def perform_create(self, serializer):
+            serializer.save()
 
 class ReviewProductView(ModelViewSet):
     queryset = Review.objects.all()

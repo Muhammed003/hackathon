@@ -16,4 +16,5 @@ urlpatterns = [
     # forgot rest password
     path('forgot-password/', ForgetPasswordView.as_view()),
     path('reset-password/', ResetPasswordView.as_view(), name="register"),
+    path('subscribe/', SubscribeView.as_view(), name="subscribe"),
 ]

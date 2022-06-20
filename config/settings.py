@@ -221,3 +221,18 @@ CACHES = {
 }
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+# CELERY
+# CELERY_BROKER_URL = 'sqs://AKIA4JGA7CP2ZNJD7SKA:WqBIj24F85OzsILLbdkRwjbQCsPPQAo4v+5IRkwM@:80//'
+# CELERY_BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-1'}
+# CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY_CACHE_BACKEND = 'default'
+
+# django setting.
+# CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#        'LOCATION':  'amqp://AKIA4JGA7CP2ZNJD7SKA:WqBIj24F85OzsILLbdkRwjbQCsPPQAo4v+5IRkwM@:80//',
+#    }
+#}
