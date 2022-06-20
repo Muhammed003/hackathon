@@ -14,9 +14,13 @@ from config.celery import app
 
 
 @shared_task
-def sent_notification_task(email):
-    send_notification_message(email)
+@shared_task
+def send_activation_code_task(activate_code, email):
+    send_activation_code(activate_code, email)
 
+
+def send_notification_message_task(email, product, product_id):
+    send_notification_message(email, product, product_id)
 @shared_task
 def add(x, y):
     return x + y

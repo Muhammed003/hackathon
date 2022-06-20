@@ -10,8 +10,9 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 import django_filters.rest_framework as filters
 from rest_framework.decorators import action
 
+from ..tasks.tasks import send_notification_message_task
 from ..users.models import CustomUser
-from ..users.services.utils import send_notification_message
+
 
 """                     My models                       """
 
@@ -23,12 +24,11 @@ from .serializers import ProductSerializer, ReviewProductSerializer, ProductDeta
 
 """             Serializers                 """
 
-
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, SearchFilter)
-    ordering_fields = ['create_date', 'name', 'price']
+    ordering_fields = ['create_date', 'name', 'price', 'type']
     permission_classes = [IsAuthenticated, ]
     pagination_class = ProductPagination
     search_fields = ['name', 'description']
@@ -90,7 +90,7 @@ class ProductViewSet(ModelViewSet):
         product_name = serializer.data.get('name')
         product_id = serializer.data.get('id')
         for contact in CustomUser.objects.filter(is_subscribed=True):
-            send_notification_message(contact.email, product_name, product_id)
+            send_notification_message_task(contact.email, product_name, product_id)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
         def perform_create(self, serializer):

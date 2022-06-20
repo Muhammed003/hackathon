@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import Token
-
+from ..tasks.tasks import send_activation_code_task
 from .models import CustomUser
 from .serializers import UserSerializer, RegisterSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
 from .services.utils import send_activation_code, send_new_password
@@ -19,9 +19,8 @@ class RegistrationView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            send_activation_code(user.activate_code, user.email)
-            message = "You are successfully registrated, we have sent activation code to your email! Thank you!"
-
+            send_activation_code_task(user.activate_code, user.email)
+            message = "You are successfully registrated, we have sent activation code to your email! Thank you"
             return Response(message, status=status.HTTP_200_OK)
 
 
