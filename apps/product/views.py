@@ -10,6 +10,8 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 import django_filters.rest_framework as filters
 from rest_framework.decorators import action
 
+from .filters import ProductFilter
+
 from ..tasks.tasks import send_notification_message_task
 from ..users.models import CustomUser
 
@@ -24,6 +26,7 @@ from .serializers import ProductSerializer, ReviewProductSerializer, ProductDeta
 
 """             Serializers                 """
 
+
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -31,6 +34,7 @@ class ProductViewSet(ModelViewSet):
     ordering_fields = ['create_date', 'name', 'price', 'type']
     permission_classes = [IsAuthenticated, ]
     pagination_class = ProductPagination
+    filterset_class = ProductFilter
     search_fields = ['name', 'description']
 
     @method_decorator(cache_page(60 * 15))
