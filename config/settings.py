@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.parse',
     'apps.tasks',
+    'apps.telegramm_bot',
 
     # lib
     'rest_framework',
