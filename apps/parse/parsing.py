@@ -30,7 +30,7 @@ def get_manufacture(url, title, description, image, price, id, link):
 	soup2 = BeautifulSoup(html2, 'lxml')
 	try:
 		manufacture = soup2.find(
-			"div", class_="product-additional-info").text
+			"div", class_="product-additional-info").find('a', class_="modal").text
 	except:
 		manufacture = ''
 	baza = {

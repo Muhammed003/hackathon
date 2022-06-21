@@ -89,8 +89,8 @@ class ProductViewSet(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         product_name = serializer.data.get('name')
         product_id = serializer.data.get('id')
-        # for contact in CustomUser.objects.filter(is_subscribed=True):
-        #     send_notification_message_task(contact.email, product_name, product_id)
+        for contact in CustomUser.objects.filter(is_subscribed=True):
+            send_notification_message_task(contact.email, product_name, product_id)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
         def perform_create(self, serializer):

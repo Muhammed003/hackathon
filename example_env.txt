@@ -19,3 +19,4 @@ link_product_notification=http
 link_send_activation_code=http
 link_send_order_activate_code=http
 parsing=False/True
+TELEBOT_TOKEN =""
